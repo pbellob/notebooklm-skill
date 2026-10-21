@@ -1,5 +1,26 @@
-> [!WARNING]
-> **This project is no longer maintained.** As of September 2026 the repository is archived: no updates, bug fixes or support. It may stop working when the upstream services change. Feel free to fork.
+> [!NOTE]
+> **This is a maintained fork.** The original repository
+> ([PleasePrompto/notebooklm-skill](https://github.com/PleasePrompto/notebooklm-skill))
+> was archived in September 2026. This fork keeps the skill working against the
+> current NotebookLM interface and fixes the problems that made it unreliable in
+> daily use:
+>
+> - **Correct answer is returned.** The old version could hand back an answer
+>   from an earlier question when the notebook already had chat history. The new
+>   turn is now identified explicitly instead of reading whatever is last on the page.
+> - **Waits until generation actually finishes**, instead of timing out after two
+>   minutes and truncating long, source-grounded answers.
+> - **Authentication detects a half-finished login.** Probing the site root
+>   reported success even when logged out; it now probes the notebook list, and
+>   supports Google Workspace accounts that reach NotebookLM through SSO on
+>   `notebook.google.com`.
+> - **Non-English interfaces work** (Spanish selectors plus generic fallbacks),
+>   rather than failing to find the query box.
+> - **Extra tooling**: list and sync every notebook in the account, and inspect
+>   the DOM when a selector breaks.
+>
+> Issues and pull requests are welcome. Credit for the original work goes to
+> [Please Prompto](https://github.com/PleasePrompto) (MIT licensed).
 
 <div align="center">
 
@@ -10,7 +31,7 @@
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)
 [![Claude Code Skill](https://img.shields.io/badge/Claude%20Code-Skill-purple.svg)](https://www.anthropic.com/news/skills)
 [![Based on](https://img.shields.io/badge/Based%20on-NotebookLM%20MCP-green.svg)](https://github.com/PleasePrompto/notebooklm-mcp)
-[![GitHub](https://img.shields.io/github/stars/PleasePrompto/notebooklm-skill?style=social)](https://github.com/PleasePrompto/notebooklm-skill)
+[![GitHub](https://img.shields.io/github/stars/pbellob/notebooklm-skill?style=social)](https://github.com/pbellob/notebooklm-skill)
 
 > Use this skill to query your Google NotebookLM notebooks directly from Claude Code for source-grounded, citation-backed answers from Gemini. Browser automation, library management, persistent auth. Drastically reduced hallucinations - answers only from your uploaded documents.
 
