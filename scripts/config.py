@@ -19,6 +19,10 @@ QUERY_INPUT_SELECTORS = [
     "textarea.query-box-input",  # Primary
     'textarea[aria-label="Feld für Anfragen"]',  # Fallback German
     'textarea[aria-label="Input for queries"]',  # Fallback English
+    'textarea[aria-label="Campo de entrada para consultas"]',  # Spanish
+    'textarea[aria-label="Entrada para consultas"]',  # Spanish alt
+    'textarea[placeholder]',  # Any textarea with placeholder
+    'textarea',  # Last resort: any textarea
 ]
 
 RESPONSE_SELECTORS = [

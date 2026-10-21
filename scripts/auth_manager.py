@@ -83,13 +83,14 @@ class AuthManager:
 
         return info
 
-    def setup_auth(self, headless: bool = False, timeout_minutes: int = 10) -> bool:
+    def setup_auth(self, headless: bool = False, timeout_minutes: int = 10, force: bool = False) -> bool:
         """
         Perform interactive authentication setup
 
         Args:
             headless: Run browser in headless mode (False for login)
             timeout_minutes: Maximum time to wait for login
+            force: Skip the "already authenticated" check and always open browser
 
         Returns:
             True if authentication successful
@@ -109,12 +110,14 @@ class AuthManager:
                 headless=headless
             )
 
-            # Navigate to NotebookLM
+            # Navigate to a URL that always requires authentication (not the public root)
             page = context.new_page()
-            page.goto("https://notebooklm.google.com", wait_until="domcontentloaded")
+            page.goto("https://notebook.google.com/notebooks", wait_until="networkidle", timeout=15000)
 
-            # Check if already authenticated
-            if "notebooklm.google.com" in page.url and "accounts.google.com" not in page.url:
+            # Check if already authenticated (skip if force=True)
+            # Must be at /notebooks (requires login) — not /login, SSO, or accounts.google.com
+            auth_url_pattern = re.compile(r"^https://notebook(?:lm)?\.google\.com/notebooks")
+            if not force and auth_url_pattern.match(page.url):
                 print("  ✅ Already authenticated!")
                 self._save_browser_state(context)
                 return True
@@ -124,9 +127,9 @@ class AuthManager:
             print(f"  ⏱️  Waiting up to {timeout_minutes} minutes for login...")
 
             try:
-                # Wait for URL to change to NotebookLM (regex ensures it's the actual domain, not a parameter)
+                # Wait for URL to land on /notebooks — confirms successful login (not just a redirect page)
                 timeout_ms = int(timeout_minutes * 60 * 1000)
-                page.wait_for_url(re.compile(r"^https://notebooklm\.google\.com/"), timeout=timeout_ms)
+                page.wait_for_url(re.compile(r"^https://notebook(?:lm)?\.google\.com/notebooks"), timeout=timeout_ms)
 
                 print(f"  ✅ Login successful!")
 
@@ -227,8 +230,8 @@ class AuthManager:
         # Clear existing auth
         self.clear_auth()
 
-        # Setup new auth
-        return self.setup_auth(headless, timeout_minutes)
+        # Setup new auth, forcing browser open even if cookies seem valid
+        return self.setup_auth(headless, timeout_minutes, force=True)
 
     def validate_auth(self) -> bool:
         """
@@ -255,12 +258,13 @@ class AuthManager:
                 headless=True
             )
 
-            # Try to access NotebookLM
+            # Try to access NotebookLM notebooks list (requires auth — not the public root)
             page = context.new_page()
-            page.goto("https://notebooklm.google.com", wait_until="domcontentloaded", timeout=30000)
+            page.goto("https://notebook.google.com/notebooks", wait_until="domcontentloaded", timeout=30000)
 
             # Check if we can access NotebookLM
-            if "notebooklm.google.com" in page.url and "accounts.google.com" not in page.url:
+            current = page.url
+            if re.match(r"^https://notebook(?:lm)?\.google\.com/notebooks", current):
                 print("  ✅ Authentication is valid")
                 return True
             else:
