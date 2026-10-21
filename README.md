@@ -98,7 +98,7 @@ mkdir -p ~/.claude/skills
 
 # 2. Clone this repository
 cd ~/.claude/skills
-git clone https://github.com/PleasePrompto/notebooklm-skill notebooklm
+git clone https://github.com/pbellob/notebooklm-skill notebooklm
 
 # 3. That's it! Open Claude Code and say:
 "What are my skills?"
@@ -398,7 +398,7 @@ That said, if you run into problems or have questions, feel free to open an issu
 
 ## Credits
 
-This skill is inspired by my [**NotebookLM MCP Server**](https://github.com/PleasePrompto/notebooklm-mcp) and provides an alternative implementation as a Claude Code Skill:
+This skill is inspired by Please Prompto's [**NotebookLM MCP Server**](https://github.com/PleasePrompto/notebooklm-mcp) and provides an alternative implementation as a Claude Code Skill:
 - Both use Patchright for browser automation (TypeScript for MCP, Python for Skill)
 - Skill version runs directly in Claude Code without MCP protocol
 - Stateless design optimized for skill architecture
@@ -421,7 +421,7 @@ Stop the copy-paste dance. Start getting accurate, grounded answers directly in 
 ```bash
 # Get started in 30 seconds
 cd ~/.claude/skills
-git clone https://github.com/PleasePrompto/notebooklm-skill notebooklm
+git clone https://github.com/pbellob/notebooklm-skill notebooklm
 # Open Claude Code: "What are my skills?"
 ```
 
@@ -429,7 +429,7 @@ git clone https://github.com/PleasePrompto/notebooklm-skill notebooklm
 
 <div align="center">
 
-Built as a Claude Code Skill adaptation of my [NotebookLM MCP Server](https://github.com/PleasePrompto/notebooklm-mcp)
+Built as a Claude Code Skill adaptation of Please Prompto's [NotebookLM MCP Server](https://github.com/PleasePrompto/notebooklm-mcp)
 
 For source-grounded, document-based research directly in Claude Code
 
